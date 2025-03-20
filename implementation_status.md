@@ -42,7 +42,7 @@ This document tracks the current implementation status of the Billy financial ma
 | User | ✅ Complete | Laravel's default with relationships |
 | Customer | ✅ Complete | Model with relationships and attribute accessors |
 | Invoice | ✅ Complete | Model with relationships and business logic |
-| InvoiceItem | ⚠️ Planned | Structure defined in migration only |
+| InvoiceItem | ✅ Complete | Model with relationships and proper attributes |
 | InvoicePayment | ⚠️ Planned | Structure defined in migration only |
 | Service | ✅ Complete | Basic model created |
 | Expense | ✅ Complete | Basic model created |
@@ -56,7 +56,7 @@ This document tracks the current implementation status of the Billy financial ma
 |------------|--------|-------------|
 | Auth Controllers | ✅ Complete | Login, registration, password reset |
 | CustomerController | ✅ Complete | Full CRUD implementation |
-| InvoiceController | ✅ Created | Basic structure only, needs implementation |
+| InvoiceController | ✅ Complete | Full implementation with complex calculations |
 | ServiceController | ✅ Created | Basic structure only, needs implementation |
 | ExpenseController | ✅ Created | Basic structure only, needs implementation |
 | RecurringBillingController | ✅ Created | Basic structure only, needs implementation |
@@ -71,7 +71,9 @@ This document tracks the current implementation status of the Billy financial ma
 | Customer List | ✅ Complete | Table view with search and pagination |
 | Customer Create/Edit | ✅ Complete | Form with validation |
 | Customer Detail | ✅ Complete | Detail view with related information |
-| Invoice Views | ⚠️ Pending | Structure planned but not implemented |
+| Invoice List | ✅ Complete | Table view with searching, filtering, and actions |
+| Invoice Create | ✅ Complete | Interactive form with dynamic line items |
+| Invoice Detail | ⚠️ Planned | Invoice viewing with payment options |
 | Service Views | ⚠️ Pending | Structure planned but not implemented |
 | Expense Views | ⚠️ Pending | Structure planned but not implemented |
 | Recurring Billing Views | ⚠️ Pending | Structure planned but not implemented |
@@ -83,7 +85,7 @@ This document tracks the current implementation status of the Billy financial ma
 |-------------|--------|-------------|
 | Auth Routes | ✅ Complete | Login, logout, registration, password reset |
 | Customer Routes | ✅ Complete | All resource routes implemented and working |
-| Invoice Routes | ✅ Defined | Routes defined but controllers need implementation |
+| Invoice Routes | ✅ Complete | All resource routes implemented and working |
 | Service Routes | ✅ Defined | Routes defined but controllers need implementation |
 | Expense Routes | ✅ Defined | Routes defined but controllers need implementation |
 | Recurring Billing Routes | ✅ Defined | Routes defined but controllers need implementation |
@@ -94,17 +96,18 @@ This document tracks the current implementation status of the Billy financial ma
 | Policy | Status | Description |
 |--------|--------|-------------|
 | CustomerPolicy | ✅ Complete | Authorization rules for customer CRUD operations |
+| InvoicePolicy | ⚠️ Pending | Referenced in controller but not implemented |
 | Other Policies | ⚠️ Pending | Planned but not implemented |
 
 ## 9. Current Issues
 
 1. **Database Migration Issues**:
-   - Customers table already exists error when running migrations
+   - Customers and Business tables already exist error when running migrations
    - Need to use `php artisan migrate:fresh --seed` to recreate tables and test user
 
 2. **Module Implementation Status**:
    - Customer Management Module: ~90% complete (missing tests)
-   - Invoice Management Module: ~30% complete (structure only)
+   - Invoice Management Module: ~80% complete (missing invoice detail view)
    - Service Management Module: ~30% complete (structure only)
    - Expense Management Module: ~30% complete (structure only)
    - Recurring Billing Module: ~30% complete (structure only)
@@ -113,9 +116,10 @@ This document tracks the current implementation status of the Billy financial ma
 ## 10. Next Steps
 
 1. Fix database migration issues
-2. Complete full implementation of Invoice Management Module
-3. Complete full implementation of Service Management Module
-4. Complete full implementation of Expense Management Module
-5. Complete full implementation of Recurring Billing Module
-6. Add reporting views and functionality
-7. Implement more unit tests
+2. Complete Invoice detail view implementation
+3. Create InvoicePolicy for proper authorization
+4. Complete full implementation of Service Management Module
+5. Complete full implementation of Expense Management Module
+6. Complete full implementation of Recurring Billing Module
+7. Add reporting views and functionality
+8. Implement more unit tests
