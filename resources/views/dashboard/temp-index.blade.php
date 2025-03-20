@@ -18,40 +18,52 @@
         <h5 class="mb-3">Quick Actions</h5>
     </div>
     <div class="col-6 col-md-3 col-lg-2">
-        <div class="quick-action-btn">
-            <i class="bi bi-receipt"></i>
-            <div>New Invoice</div>
-        </div>
+        <a href="{{ route('invoices.create') }}" class="text-decoration-none">
+            <div class="quick-action-btn">
+                <i class="bi bi-receipt"></i>
+                <div>New Invoice</div>
+            </div>
+        </a>
     </div>
     <div class="col-6 col-md-3 col-lg-2">
-        <div class="quick-action-btn">
-            <i class="bi bi-person-plus"></i>
-            <div>New Customer</div>
-        </div>
+        <a href="{{ route('customers.create') }}" class="text-decoration-none">
+            <div class="quick-action-btn">
+                <i class="bi bi-person-plus"></i>
+                <div>New Customer</div>
+            </div>
+        </a>
     </div>
     <div class="col-6 col-md-3 col-lg-2">
-        <div class="quick-action-btn">
-            <i class="bi bi-cash"></i>
-            <div>New Expense</div>
-        </div>
+        <a href="{{ route('expenses.create') }}" class="text-decoration-none">
+            <div class="quick-action-btn">
+                <i class="bi bi-cash"></i>
+                <div>New Expense</div>
+            </div>
+        </a>
     </div>
     <div class="col-6 col-md-3 col-lg-2">
-        <div class="quick-action-btn">
-            <i class="bi bi-box"></i>
-            <div>New Service</div>
-        </div>
+        <a href="{{ route('services.create') }}" class="text-decoration-none">
+            <div class="quick-action-btn">
+                <i class="bi bi-box"></i>
+                <div>New Service</div>
+            </div>
+        </a>
     </div>
     <div class="col-6 col-md-3 col-lg-2">
-        <div class="quick-action-btn">
-            <i class="bi bi-arrow-repeat"></i>
-            <div>New Recurring</div>
-        </div>
+        <a href="{{ route('recurring.create') }}" class="text-decoration-none">
+            <div class="quick-action-btn">
+                <i class="bi bi-arrow-repeat"></i>
+                <div>New Recurring</div>
+            </div>
+        </a>
     </div>
     <div class="col-6 col-md-3 col-lg-2">
-        <div class="quick-action-btn">
-            <i class="bi bi-bar-chart"></i>
-            <div>Reports</div>
-        </div>
+        <a href="{{ route('reports.index') }}" class="text-decoration-none">
+            <div class="quick-action-btn">
+                <i class="bi bi-bar-chart"></i>
+                <div>Reports</div>
+            </div>
+        </a>
     </div>
 </div>
 
@@ -116,7 +128,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Recent Invoices</h5>
-                <button class="btn btn-sm btn-outline-primary">View All</button>
+                <a href="{{ route('invoices.index') }}" class="btn btn-sm btn-outline-primary">View All</a>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -169,7 +181,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Recent Expenses</h5>
-                <button class="btn btn-sm btn-outline-primary">View All</button>
+                <a href="{{ route('expenses.index') }}" class="btn btn-sm btn-outline-primary">View All</a>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -221,7 +233,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Upcoming Payments</h5>
-                <button class="btn btn-sm btn-outline-primary">View All</button>
+                <a href="{{ route('recurring.index') }}" class="btn btn-sm btn-outline-primary">View All</a>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -244,9 +256,9 @@
                                 <td>{{ now()->addDays(3)->format('m/d/Y') }}</td>
                                 <td><span class="badge bg-success">Active</span></td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary">
+                                    <a href="#" class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-receipt"></i>
-                                    </button>
+                                    </a>
                                 </td>
                             </tr>
                             <tr>
@@ -256,9 +268,9 @@
                                 <td>{{ now()->addDays(5)->format('m/d/Y') }}</td>
                                 <td><span class="badge bg-success">Active</span></td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary">
+                                    <a href="#" class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-receipt"></i>
-                                    </button>
+                                    </a>
                                 </td>
                             </tr>
                             <tr>
@@ -268,9 +280,9 @@
                                 <td>{{ now()->addDays(7)->format('m/d/Y') }}</td>
                                 <td><span class="badge bg-success">Active</span></td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary">
+                                    <a href="#" class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-receipt"></i>
-                                    </button>
+                                    </a>
                                 </td>
                             </tr>
                         </tbody>

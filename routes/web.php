@@ -3,6 +3,11 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\RecurringBillingController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,27 +40,27 @@ Route::middleware('auth')->group(function () {
     // Customer Management
     Route::resource('customers', CustomerController::class);
     
-    // The following routes are commented out as controllers are not implemented yet
-    /*
     // Invoice Management
-    Route::resource('invoices', \App\Http\Controllers\InvoiceController::class);
+    Route::resource('invoices', InvoiceController::class);
     
     // Service Management
-    Route::resource('services', \App\Http\Controllers\ServiceController::class);
+    Route::resource('services', ServiceController::class);
     
     // Expense Management
-    Route::resource('expenses', \App\Http\Controllers\ExpenseController::class);
+    Route::resource('expenses', ExpenseController::class);
     
     // Recurring Billing
-    Route::resource('recurring', \App\Http\Controllers\RecurringBillingController::class);
+    Route::resource('recurring', RecurringBillingController::class);
     
     // Reports
-    Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
-    Route::get('/reports/income', [\App\Http\Controllers\ReportController::class, 'income'])->name('reports.income');
-    Route::get('/reports/expenses', [\App\Http\Controllers\ReportController::class, 'expenses'])->name('reports.expenses');
-    Route::get('/reports/customers', [\App\Http\Controllers\ReportController::class, 'customers'])->name('reports.customers');
-    Route::get('/reports/tax', [\App\Http\Controllers\ReportController::class, 'tax'])->name('reports.tax');
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/income', [ReportController::class, 'income'])->name('reports.income');
+    Route::get('/reports/expenses', [ReportController::class, 'expenses'])->name('reports.expenses');
+    Route::get('/reports/customers', [ReportController::class, 'customers'])->name('reports.customers');
+    Route::get('/reports/tax', [ReportController::class, 'tax'])->name('reports.tax');
     
+    // The following routes are commented out as controllers are not implemented yet
+    /*
     // User Management
     Route::resource('users', \App\Http\Controllers\UserController::class);
     
