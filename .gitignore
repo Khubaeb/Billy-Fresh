@@ -1,10 +1,11 @@
-/.phpunit.cache
 /node_modules
 /public/build
 /public/hot
 /public/storage
 /storage/*.key
 /vendor
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
 .env
 .env.backup
 .env.production
@@ -17,3 +18,24 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+.phpunit.cache
+
+# OS specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and database
+*.log
+*.sql
+*.sqlite
+
+# Editor backup files
+*~
+*.swp
+*.bak
+
+# Additional Laravel specific
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
