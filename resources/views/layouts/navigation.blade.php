@@ -5,12 +5,12 @@
             <img src="{{ asset('images/logo.svg') }}" alt="Billy Logo" height="30" class="d-inline-block align-text-top me-2">
             {{ config('app.name', 'Billy') }}
         </a>
-        
+
         <!-- Mobile Toggle -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        
+
         <!-- Navigation Items -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
@@ -19,46 +19,53 @@
                         <i class="bi bi-speedometer2 me-1"></i> Dashboard
                     </a>
                 </li>
-                
-                <!-- Only show these items when authenticated -->
+
+                <!-- Only show these items when authenticated --> 
                 @auth
                     <!-- Customers -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link {{ request()->routeIs('customers.*') ? 'active' : '' }}" href="{{ route('customers.index') }}">
                             <i class="bi bi-people me-1"></i> Customers
                         </a>
                     </li>
-                    
+
                     <!-- Invoices -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link {{ request()->routeIs('invoices.*') ? 'active' : '' }}" href="{{ route('invoices.index') }}">
                             <i class="bi bi-receipt me-1"></i> Invoices
                         </a>
                     </li>
-                    
+
                     <!-- Services -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link {{ request()->routeIs('services.*') ? 'active' : '' }}" href="{{ route('services.index') }}">
                             <i class="bi bi-box me-1"></i> Services
                         </a>
                     </li>
-                    
+
                     <!-- Expenses -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link {{ request()->routeIs('expenses.*') ? 'active' : '' }}" href="{{ route('expenses.index') }}">
                             <i class="bi bi-cash-coin me-1"></i> Expenses
                         </a>
                     </li>
-                    
+
+                    <!-- Recurring Billing -->
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('recurring.*') ? 'active' : '' }}" href="{{ route('recurring.index') }}">
+                            <i class="bi bi-arrow-repeat me-1"></i> Recurring
+                        </a>
+                    </li>
+
                     <!-- Reports -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}" href="{{ route('reports.index') }}">
                             <i class="bi bi-bar-chart me-1"></i> Reports
                         </a>
                     </li>
                 @endauth
             </ul>
-            
+
             <!-- Right Side -->
             <ul class="navbar-nav">
                 <!-- Authentication -->
@@ -74,16 +81,16 @@
                                     <i class="bi bi-person me-2"></i> {{ __('Profile') }}
                                 </a>
                             </li>
-                            
+
                             <!-- Settings -->
                             <li>
                                 <a class="dropdown-item" href="#">
                                     <i class="bi bi-gear me-2"></i> {{ __('Settings') }}
                                 </a>
                             </li>
-                            
+
                             <li><hr class="dropdown-divider"></li>
-                            
+
                             <!-- Logout -->
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
