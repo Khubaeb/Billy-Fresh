@@ -45,6 +45,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
     Route::post('/documents/batch-upload', [DocumentController::class, 'batchUpload'])->name('documents.batch-upload');
     Route::get('/entity/{entityType}/{entityId}/documents', [DocumentController::class, 'listByEntity'])->name('documents.by-entity');
+    
+    // Settings Management
+    Route::get('/settings/business/{businessId?}', [SettingsController::class, 'business'])->name('settings.business');
+    Route::put('/settings/business/{businessId}', [SettingsController::class, 'updateBusiness'])->name('settings.business.update');
+    Route::get('/settings/user', [SettingsController::class, 'user'])->name('settings.user');
+    Route::put('/settings/user', [SettingsController::class, 'updateUser'])->name('settings.user.update');
+    Route::get('/settings/system', [SettingsController::class, 'system'])->name('settings.system');
+    Route::put('/settings/system', [SettingsController::class, 'updateSystem'])->name('settings.system.update');
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
