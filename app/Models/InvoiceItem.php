@@ -27,7 +27,7 @@ class InvoiceItem extends Model
         'subtotal',
         'tax_amount',
         'discount_amount',
-        'total',
+        'total_amount'
     ];
 
     /**
@@ -43,7 +43,7 @@ class InvoiceItem extends Model
         'subtotal' => 'decimal:2',
         'tax_amount' => 'decimal:2',
         'discount_amount' => 'decimal:2',
-        'total' => 'decimal:2',
+        'total_amount' => 'decimal:2'
     ];
 
     /**
@@ -60,5 +60,58 @@ class InvoiceItem extends Model
     public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
+    }
+
+    /**
+     * Get the total attribute.
+     * This is for backward compatibility with existing views that use 'total'.
+     *
+     * @return float
+     */
+    public function getTotalAttribute()
+    {
+        return $this->total_amount;
+    }
+
+    /**
+     * Set total attribute.
+     * This is for backward compatibility with existing forms that use 'total'.
+     *
+     * @param float $value
+     * @return void
+     */
+    public function setTotalAttribute($value)
+    {
+        $this->attributes['total_amount'] = $value;
+    }
+
+    /**
+     * Calculate the subtotal, tax amount, discount amount, and total amount.
+     *
+     * @return $this
+     */
+    public function calculateAmounts()
+    {
+        // Calculate subtotal
+        $this->subtotal = $this->quantity * $this->unit_price;
+
+        // Calculate tax amount
+        if ($this->tax_rate > 0) {
+            $this->tax_amount = $this->subtotal * ($this->tax_rate / 100);
+        } else {
+            $this->tax_amount = 0;
+        }
+
+        // Calculate discount amount
+        if ($this->discount_rate > 0) {
+            $this->discount_amount = $this->subtotal * ($this->discount_rate / 100);
+        } else {
+            $this->discount_amount = 0;
+        }
+
+        // Calculate total
+        $this->total_amount = $this->subtotal + $this->tax_amount - $this->discount_amount;
+
+        return $this;
     }
 }
