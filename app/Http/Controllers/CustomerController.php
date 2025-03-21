@@ -21,7 +21,7 @@ class CustomerController extends Controller
             ->orWhereHas('business', function ($query) {
                 $query->where('user_id', Auth::id());
             })
-            ->orderBy('name')
+            ->orderBy('full_name')
             ->paginate(10);
 
         return view('customers.index', compact('customers'));
@@ -33,7 +33,7 @@ class CustomerController extends Controller
     public function create(): View
     {
         $businesses = Business::where('user_id', Auth::id())->pluck('name', 'id');
-        
+
         return view('customers.create', compact('businesses'));
     }
 
@@ -57,16 +57,28 @@ class CustomerController extends Controller
             'website' => 'nullable|url|max:255',
             'notes' => 'nullable|string',
             'business_id' => 'nullable|exists:businesses,id',
+            'identification_number' => 'nullable|string|max:100',
+            'category' => 'nullable|string|max:100',
+            'status' => 'nullable|string|max:50',
+            'next_contact_date' => 'nullable|date',
         ]);
 
         // Set the user ID to the authenticated user
         $validated['user_id'] = Auth::id();
         
+        // Set default status if not provided
+        if (!isset($validated['status'])) {
+            $validated['status'] = 'active';
+        }
+        
+        // Set is_active based on status
+        $validated['is_active'] = ($validated['status'] === 'active');
+
         // Create the customer
         $customer = Customer::create($validated);
-        
+
         if ($customer) {
-            return redirect()->route('customers.show', $customer)
+            return redirect()->route('customers.show', $customer) 
                 ->with('success', 'Customer created successfully.');
         } else {
             return back()->withInput()
@@ -81,8 +93,14 @@ class CustomerController extends Controller
     {
         // Authorization check
         $this->authorize('view', $customer);
+
+        // Load related data
+        $customer->load('invoices', 'recurringBillings');
         
-        return view('customers.show', compact('customer'));
+        // Calculate unpaid amounts
+        $unpaidAmount = $customer->getTotalUnpaidAmount();
+
+        return view('customers.show', compact('customer', 'unpaidAmount'));
     }
 
     /**
@@ -92,9 +110,9 @@ class CustomerController extends Controller
     {
         // Authorization check
         $this->authorize('update', $customer);
-        
+
         $businesses = Business::where('user_id', Auth::id())->pluck('name', 'id');
-        
+
         return view('customers.edit', compact('customer', 'businesses'));
     }
 
@@ -105,7 +123,7 @@ class CustomerController extends Controller
     {
         // Authorization check
         $this->authorize('update', $customer);
-        
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
@@ -122,10 +140,14 @@ class CustomerController extends Controller
             'notes' => 'nullable|string',
             'business_id' => 'nullable|exists:businesses,id',
             'is_active' => 'boolean',
+            'identification_number' => 'nullable|string|max:100',
+            'category' => 'nullable|string|max:100',
+            'status' => 'nullable|string|max:50',
+            'next_contact_date' => 'nullable|date',
         ]);
-        
+
         if ($customer->update($validated)) {
-            return redirect()->route('customers.show', $customer)
+            return redirect()->route('customers.show', $customer) 
                 ->with('success', 'Customer updated successfully.');
         } else {
             return back()->withInput()
@@ -136,11 +158,11 @@ class CustomerController extends Controller
     /**
      * Remove the specified customer from storage.
      */
-    public function destroy(Customer $customer): RedirectResponse
+    public function destroy(Customer $customer): RedirectResponse 
     {
         // Authorization check
         $this->authorize('delete', $customer);
-        
+
         try {
             $customer->delete();
             return redirect()->route('customers.index')
