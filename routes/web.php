@@ -112,4 +112,6 @@ Route::middleware('auth')->group(function () {
     */
 });
 
+// Include accounting portal routes
+require __DIR__.'/accounting.php';
 require __DIR__.'/auth.php';
