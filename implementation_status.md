@@ -71,7 +71,7 @@ This document tracks the current implementation status of the Billy financial ma
 | Controller | Status | Description |
 |------------|--------|-------------|
 | Auth Controllers | ✅ Complete | Login, registration, password reset |
-| CustomerController | ✅ Complete | Updated for new schema field names (full_name, company_name, etc.) |
+| CustomerController | ✅ Complete | Updated for new schema field names and fixed business-user relationships |
 | InvoiceController | ✅ Complete | Updated for new schema field names and added payment handling |
 | ServiceController | ✅ Complete | Full implementation with usage statistics |
 | ExpenseController | ✅ Complete | Full implementation with file upload and relationship handling |
@@ -80,7 +80,7 @@ This document tracks the current implementation status of the Billy financial ma
 | TaxRateController | ✅ Complete | Full implementation with default tax rate management |
 | DocumentController | ✅ Complete | Full implementation with upload, download, and entity associations |
 | SettingsController | ✅ Complete | Full implementation with business, user, and system settings |
-| ReportController | ✅ Complete | Report methods defined |
+| ReportController | ✅ Complete | Report methods defined with fixed business-user relationships |
 | ReportExportController | ✅ Complete | Controllers for PDF exports of all report types (Excel exports removed) |
 | PaymentMethodController | ⚠️ Pending | Not implemented yet |
 
@@ -201,7 +201,7 @@ This document tracks the current implementation status of the Billy financial ma
 | Login/Authentication | ✅ Working | Successfully logs in test user |
 | Dashboard | ✅ Working | Displays financial overview and quick actions |
 | Navigation Menu | ✅ Working | All module links function correctly |
-| Customer Management | ⏳ Testing | Need to verify customer creation and editing |
+| Customer Management | ✅ Working | Fixed business-user relationship queries, create form loads correctly |
 | Invoice Management | ⏳ Testing | Need to verify invoice creation and payment handling |
 | Service Management | ⏳ Testing | Need to verify service creation and pricing calculations |
 | Expense Management | ⏳ Testing | Need to verify expense tracking and categorization |
@@ -221,7 +221,19 @@ This document tracks the current implementation status of the Billy financial ma
 
 ## 11. Next Steps (Prioritized)
 
-1. Complete UI verification for all core modules
-2. Implement payment method management
-3. Add comprehensive test coverage for all modules
+1. Complete UI verification for remaining core modules
+2. Implement payment method management (if needed, since we're not focusing on this module)
+3. Add comprehensive test coverage for all modules 
 4. Fix any issues identified during UI verification
+
+## 12. Recent Fixes
+
+1. **Fixed Database Relationship Queries**:
+   - Updated CustomerController to use proper user-business relationship through the user_roles pivot table
+   - Updated ReportController to use proper relationship queries for all reports (income, expenses, customers, tax)
+   - Fixed errors related to 'user_id' column not found in 'businesses' table
+
+2. **Excel Export Removal**:
+   - Removed Excel export functionality as requested due to compatibility issues
+   - Deleted all Excel export classes (IncomeExport, ExpensesExport, TaxExport, CustomerExport)
+   - Updated UI to only show PDF and Print options in report export dropdowns
