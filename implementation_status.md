@@ -221,8 +221,8 @@ This document tracks the current implementation status of the Billy financial ma
 
 ## 11. Next Steps (Prioritized)
 
-1. Complete UI verification for remaining core modules
-2. Implement payment method management (if needed, since we're not focusing on this module)
+1. Implement Bookkeeping Module (detailed in docs/bookkeeping_module_plan.md)
+2. Complete UI verification for remaining core modules
 3. Add comprehensive test coverage for all modules 
 4. Fix any issues identified during UI verification
 
@@ -249,3 +249,43 @@ This document tracks the current implementation status of the Billy financial ma
    - Added test business creation in TestUserSeeder
    - Created sample users for each role type with standard credentials
    - Properly associated users, roles, and businesses through pivot tables
+
+## 13. Planned Bookkeeping Module
+
+A comprehensive bookkeeping module is planned to complete the financial management system. This module will add proper double-entry accounting capabilities to the system, making it suitable for professional bookkeeping and accounting.
+
+### Components to Implement
+
+1. **Chart of Accounts**
+   - Account hierarchy with categories (assets, liabilities, equity, income, expenses)
+   - Account balances and history
+
+2. **General Ledger**
+   - Journal entries with double-entry accounting
+   - Transaction history and audit trail
+
+3. **Bank Reconciliation**
+   - Bank account management
+   - Transaction matching 
+   - Reconciliation reports
+
+4. **Financial Statements**
+   - Balance Sheet
+   - Profit & Loss Statement
+   - Cash Flow Statement
+
+5. **Fiscal Period Management**
+   - Period opening/closing
+   - Year-end processes
+
+### Database Schema Expansion
+
+Additional database tables will be required:
+- accounts
+- journal_entries
+- ledger_entries
+- bank_accounts
+- bank_transactions
+- fiscal_periods
+
+A complete implementation plan has been created in docs/bookkeeping_module_plan.md.
