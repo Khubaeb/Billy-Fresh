@@ -62,7 +62,14 @@ class ReportController extends Controller
         }
         
         // Get income data for the period
-        $invoices = Invoice::where('user_id', Auth::id())
+        $invoices = Invoice::where(function($query) {
+                $query->where('user_id', Auth::id())
+                    ->orWhereHas('business', function($businessQuery) {
+                        $businessQuery->whereHas('users', function($userQuery) {
+                            $userQuery->where('users.id', Auth::id());
+                        });
+                    });
+            })
             ->whereBetween('invoice_date', [$startDate, $endDate])
             ->get();
         
@@ -136,7 +143,14 @@ class ReportController extends Controller
         }
         
         // Get expense data for the period
-        $expenses = Expense::where('user_id', Auth::id())
+        $expenses = Expense::where(function($query) {
+                $query->where('user_id', Auth::id())
+                    ->orWhereHas('business', function($businessQuery) {
+                        $businessQuery->whereHas('users', function($userQuery) {
+                            $userQuery->where('users.id', Auth::id());
+                        });
+                    });
+            })
             ->whereBetween('expense_date', [$startDate, $endDate])
             ->get();
         
@@ -199,7 +213,14 @@ class ReportController extends Controller
         }
         
         // Get customer data with invoice information
-        $customers = Customer::where('user_id', Auth::id())
+        $customers = Customer::where(function($query) {
+                $query->where('user_id', Auth::id())
+                    ->orWhereHas('business', function($businessQuery) {
+                        $businessQuery->whereHas('users', function($userQuery) {
+                            $userQuery->where('users.id', Auth::id());
+                        });
+                    });
+            })
             ->withCount('invoices')
             ->withSum(['invoices' => function($query) use ($startDate, $endDate) {
                 $query->whereBetween('invoice_date', [$startDate, $endDate]);
@@ -255,12 +276,26 @@ class ReportController extends Controller
                 $endDate = Carbon::now()->endOfQuarter();
         }
         
-        // Get tax data
-        $collectedTax = Invoice::where('user_id', Auth::id())
+        // Get tax data for businesses where user is a member
+        $collectedTax = Invoice::where(function($query) {
+                $query->where('user_id', Auth::id())
+                    ->orWhereHas('business', function($businessQuery) {
+                        $businessQuery->whereHas('users', function($userQuery) {
+                            $userQuery->where('users.id', Auth::id());
+                        });
+                    });
+            })
             ->whereBetween('invoice_date', [$startDate, $endDate])
             ->sum('tax_amount');
         
-        $paidTax = Expense::where('user_id', Auth::id())
+        $paidTax = Expense::where(function($query) {
+                $query->where('user_id', Auth::id())
+                    ->orWhereHas('business', function($businessQuery) {
+                        $businessQuery->whereHas('users', function($userQuery) {
+                            $userQuery->where('users.id', Auth::id());
+                        });
+                    });
+            })
             ->whereBetween('expense_date', [$startDate, $endDate])
             ->sum('tax_amount');
         
@@ -274,11 +309,25 @@ class ReportController extends Controller
             $monthStart = clone $currentDate->startOfMonth();
             $monthEnd = clone $currentDate->endOfMonth();
             
-            $monthlyCollected = Invoice::where('user_id', Auth::id())
+            $monthlyCollected = Invoice::where(function($query) {
+                    $query->where('user_id', Auth::id())
+                        ->orWhereHas('business', function($businessQuery) {
+                            $businessQuery->whereHas('users', function($userQuery) {
+                                $userQuery->where('users.id', Auth::id());
+                            });
+                        });
+                })
                 ->whereBetween('invoice_date', [$monthStart, $monthEnd])
                 ->sum('tax_amount');
             
-            $monthlyPaid = Expense::where('user_id', Auth::id())
+            $monthlyPaid = Expense::where(function($query) {
+                    $query->where('user_id', Auth::id())
+                        ->orWhereHas('business', function($businessQuery) {
+                            $businessQuery->whereHas('users', function($userQuery) {
+                                $userQuery->where('users.id', Auth::id());
+                            });
+                        });
+                })
                 ->whereBetween('expense_date', [$monthStart, $monthEnd])
                 ->sum('tax_amount');
             

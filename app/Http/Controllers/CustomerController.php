@@ -19,7 +19,9 @@ class CustomerController extends Controller
     {
         $customers = Customer::where('user_id', Auth::id())
             ->orWhereHas('business', function ($query) {
-                $query->where('user_id', Auth::id());
+                $query->whereHas('users', function($userQuery) {
+                    $userQuery->where('users.id', Auth::id());
+                });
             })
             ->orderBy('full_name')
             ->paginate(10);
@@ -32,7 +34,9 @@ class CustomerController extends Controller
      */
     public function create(): View
     {
-        $businesses = Business::where('user_id', Auth::id())->pluck('name', 'id');
+        $businesses = Business::whereHas('users', function ($query) {
+            $query->where('users.id', Auth::id());
+        })->pluck('name', 'id');
 
         return view('customers.create', compact('businesses'));
     }
@@ -111,7 +115,9 @@ class CustomerController extends Controller
         // Authorization check
         $this->authorize('update', $customer);
 
-        $businesses = Business::where('user_id', Auth::id())->pluck('name', 'id');
+        $businesses = Business::whereHas('users', function ($query) {
+            $query->where('users.id', Auth::id());
+        })->pluck('name', 'id');
 
         return view('customers.edit', compact('customer', 'businesses'));
     }
