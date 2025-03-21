@@ -39,6 +39,12 @@ Route::middleware('auth')->group(function () {
     // Tax Rate Management
     Route::resource('tax-rates', TaxRateController::class);
     Route::post('/tax-rates/{taxRate}/set-default', [TaxRateController::class, 'setDefault'])->name('tax-rates.set-default');
+    
+    // Document Management
+    Route::resource('documents', DocumentController::class);
+    Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
+    Route::post('/documents/batch-upload', [DocumentController::class, 'batchUpload'])->name('documents.batch-upload');
+    Route::get('/entity/{entityType}/{entityId}/documents', [DocumentController::class, 'listByEntity'])->name('documents.by-entity');
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -78,8 +78,8 @@ This document tracks the current implementation status of the Billy financial ma
 | RecurringBillingController | ✅ Complete | Full implementation with scheduling and status management |
 | BusinessController | ✅ Complete | Full implementation with logo upload and user management |
 | TaxRateController | ✅ Complete | Full implementation with default tax rate management |
+| DocumentController | ✅ Complete | Full implementation with upload, download, and entity associations |
 | ReportController | ✅ Complete | Report methods defined |
-| DocumentController | ⚠️ Pending | Not implemented yet |
 | PaymentMethodController | ⚠️ Pending | Not implemented yet |
 | SettingsController | ⚠️ Pending | Not implemented yet |
 
@@ -115,8 +115,10 @@ This document tracks the current implementation status of the Billy financial ma
 | Tax Rate Create | ✅ Complete | Form for creating tax rates with helpful examples and documentation |
 | Tax Rate Detail | ✅ Complete | Detailed view with usage statistics and example tax calculations |
 | Tax Rate Edit | ✅ Complete | Full editing capabilities with default tax rate management |
+| Document List | ✅ Complete | Table view with document listing, filters, and preview capabilities |
+| Document Create | ✅ Complete | Upload form with file type support and entity association options |
+| Document Detail | ✅ Complete | Document preview with download option and metadata display |
 | Report Views | ⚠️ Pending | Structure planned but not implemented |
-| Document Views | ⚠️ Pending | Not implemented yet |
 | Payment Method Views | ⚠️ Pending | Not implemented yet |
 | Settings Views | ⚠️ Pending | Not implemented yet |
 
@@ -132,8 +134,8 @@ This document tracks the current implementation status of the Billy financial ma
 | Recurring Billing Routes | ✅ Complete | All resource routes plus custom status and invoice generation routes |
 | Business Routes | ✅ Complete | All resource routes plus custom route for updating settings |
 | Tax Rate Routes | ✅ Complete | All resource routes plus custom route for setting default tax rate |
+| Document Routes | ✅ Complete | All resource routes plus download, batch upload, and entity-specific routes |
 | Report Routes | ✅ Complete | All report routes defined |
-| Document Routes | ⚠️ Pending | Not defined yet |
 | Payment Method Routes | ⚠️ Pending | Not defined yet |
 | Settings Routes | ⚠️ Pending | Not defined yet |
 
@@ -148,7 +150,7 @@ This document tracks the current implementation status of the Billy financial ma
 | RecurringBillingPolicy | ✅ Complete | Authorization rules including status changes and invoice generation |
 | BusinessPolicy | ✅ Complete | Authorization rules for CRUD operations and user management |
 | TaxRatePolicy | ✅ Complete | Authorization rules for tax rate operations and default tax rate setting |
-| DocumentPolicy | ⚠️ Pending | Not implemented yet |
+| DocumentPolicy | ✅ Complete | Authorization rules for document operations including download and batch uploads |
 | Other Policies | ⚠️ Pending | Planned but not implemented |
 
 ## 9. Current Status
@@ -178,13 +180,12 @@ This document tracks the current implementation status of the Billy financial ma
    - Recurring Billing Module: ~100% complete (fully implemented)
    - Business Management Module: ~100% complete (fully implemented with user management)
    - Tax Rate Management Module: ~100% complete (fully implemented with default tax rate functionality)
+   - Document Management Module: ~100% complete (fully implemented with upload, download, and entity associations)
    - Reporting Module: ~45% complete (controller methods and routes defined)
-   - Document Management Module: ~40% complete (model implemented, views pending)
    - Settings & Configuration Module: ~40% complete (model implemented, views pending)
 
 ## 10. Next Steps (Prioritized)
 
-1. Implement document upload and management system
-2. Develop settings and configuration module
-3. Add reporting views and functionality
-4. Add comprehensive test coverage for all modules
+1. Develop settings and configuration module
+2. Add reporting views and functionality
+3. Add comprehensive test coverage for all modules
