@@ -165,29 +165,6 @@ class Invoice extends Model
     }
 
     /**
-     * Get the total attribute.
-     * This is for backward compatibility with existing views that use 'total'.
-     *
-     * @return float
-     */
-    public function getTotalAttribute()
-    {
-        return $this->total_amount;
-    }
-
-    /**
-     * Set total attribute.
-     * This is for backward compatibility with existing forms that use 'total'.
-     *
-     * @param float $value
-     * @return void
-     */
-    public function setTotalAttribute($value)
-    {
-        $this->attributes['total_amount'] = $value;
-    }
-
-    /**
      * Get the payment status label.
      *
      * @return string

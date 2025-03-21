@@ -108,52 +108,6 @@ class Customer extends Model
     }
 
     /**
-     * Get name attribute.
-     * This is for backward compatibility with existing views that use 'name'.
-     *
-     * @return string
-     */
-    public function getNameAttribute()
-    {
-        return $this->full_name;
-    }
-
-    /**
-     * Set name attribute.
-     * This is for backward compatibility with existing forms that use 'name'.
-     *
-     * @param string $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['full_name'] = $value;
-    }
-
-    /**
-     * Get company attribute.
-     * This is for backward compatibility with existing views that use 'company'.
-     *
-     * @return string|null
-     */
-    public function getCompanyAttribute()
-    {
-        return $this->company_name;
-    }
-
-    /**
-     * Set company attribute.
-     * This is for backward compatibility with existing forms that use 'company'.
-     *
-     * @param string $value
-     * @return void
-     */
-    public function setCompanyAttribute($value)
-    {
-        $this->attributes['company_name'] = $value;
-    }
-
-    /**
      * Scope a query to only include active customers.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query

@@ -63,29 +63,6 @@ class InvoiceItem extends Model
     }
 
     /**
-     * Get the total attribute.
-     * This is for backward compatibility with existing views that use 'total'.
-     *
-     * @return float
-     */
-    public function getTotalAttribute()
-    {
-        return $this->total_amount;
-    }
-
-    /**
-     * Set total attribute.
-     * This is for backward compatibility with existing forms that use 'total'.
-     *
-     * @param float $value
-     * @return void
-     */
-    public function setTotalAttribute($value)
-    {
-        $this->attributes['total_amount'] = $value;
-    }
-
-    /**
      * Calculate the subtotal, tax amount, discount amount, and total amount.
      *
      * @return $this
@@ -109,7 +86,7 @@ class InvoiceItem extends Model
             $this->discount_amount = 0;
         }
 
-        // Calculate total
+        // Calculate total amount
         $this->total_amount = $this->subtotal + $this->tax_amount - $this->discount_amount;
 
         return $this;

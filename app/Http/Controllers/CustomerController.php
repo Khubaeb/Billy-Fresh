@@ -43,10 +43,10 @@ class CustomerController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'full_name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:20',
-            'company' => 'nullable|string|max:255',
+            'company_name' => 'nullable|string|max:255',
             'tax_number' => 'nullable|string|max:50',
             'address_line1' => 'nullable|string|max:255',
             'address_line2' => 'nullable|string|max:255',
@@ -125,10 +125,10 @@ class CustomerController extends Controller
         $this->authorize('update', $customer);
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'full_name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:20',
-            'company' => 'nullable|string|max:255',
+            'company_name' => 'nullable|string|max:255',
             'tax_number' => 'nullable|string|max:50',
             'address_line1' => 'nullable|string|max:255',
             'address_line2' => 'nullable|string|max:255',
