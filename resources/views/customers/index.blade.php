@@ -43,12 +43,12 @@
                             <tr>
                                 <td>
                                     <a href="{{ route('customers.show', $customer) }}" class="text-decoration-none fw-medium">
-                                        {{ $customer->name }}
+                                        {{ $customer->full_name }}
                                     </a>
                                 </td>
                                 <td>{{ $customer->email ?? '-' }}</td>
                                 <td>{{ $customer->phone ?? '-' }}</td>
-                                <td>{{ $customer->company ?? '-' }}</td>
+                                <td>{{ $customer->company_name ?? '-' }}</td>
                                 <td>
                                     @if($customer->is_active)
                                         <span class="badge bg-success">Active</span>
@@ -64,14 +64,14 @@
                                         <a href="{{ route('customers.edit', $customer) }}" class="btn btn-sm btn-outline-primary" title="Edit">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" 
-                                                data-bs-toggle="modal" 
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                                data-bs-toggle="modal"
                                                 data-bs-target="#deleteCustomerModal-{{ $customer->id }}"
                                                 title="Delete">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </div>
-                                    
+
                                     <!-- Delete Modal -->
                                     <div class="modal fade" id="deleteCustomerModal-{{ $customer->id }}" tabindex="-1" aria-labelledby="deleteCustomerModalLabel-{{ $customer->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -81,7 +81,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body text-start">
-                                                    Are you sure you want to delete {{ $customer->name }}? This action cannot be undone.
+                                                    Are you sure you want to delete {{ $customer->full_name }}? This action cannot be undone.
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -100,7 +100,7 @@
                     </tbody>
                 </table>
             </div>
-            
+
             <div class="mt-4">
                 {{ $customers->links() }}
             </div>
