@@ -74,7 +74,7 @@ This document tracks the current implementation status of the Billy financial ma
 | CustomerController | ✅ Complete | Updated for new schema field names (full_name, company_name, etc.) |
 | InvoiceController | ✅ Complete | Updated for new schema field names and added payment handling |
 | ServiceController | ✅ Complete | Full implementation with usage statistics |
-| ExpenseController | ✅ Created | Basic structure, needs implementation with new models |
+| ExpenseController | ✅ Complete | Full implementation with file upload and relationship handling |
 | RecurringBillingController | ✅ Created | Basic structure, needs implementation with new models |
 | ReportController | ✅ Complete | Report methods defined |
 | BusinessController | ⚠️ Pending | Not implemented yet |
@@ -99,7 +99,10 @@ This document tracks the current implementation status of the Billy financial ma
 | Service Create | ✅ Complete | Form with validation and profit calculations |
 | Service Detail | ✅ Complete | Detail view with usage statistics |
 | Service Edit | ✅ Complete | Form with dynamic profit calculations |
-| Expense Views | ⚠️ Pending | Structure planned but not implemented |
+| Expense List | ✅ Complete | Table view with searching, filtering, and financial summary |
+| Expense Create | ✅ Complete | Comprehensive form with file uploads and billable options |
+| Expense Detail | ✅ Complete | Detailed view with receipt image, related entities, and metadata |
+| Expense Edit | ✅ Complete | Full editing capabilities matching creation form |
 | Recurring Billing Views | ⚠️ Pending | Structure planned but not implemented |
 | Report Views | ⚠️ Pending | Structure planned but not implemented |
 | Business Views | ⚠️ Pending | Not implemented yet |
@@ -116,7 +119,7 @@ This document tracks the current implementation status of the Billy financial ma
 | Customer Routes | ✅ Complete | All resource routes implemented and working |
 | Invoice Routes | ✅ Complete | All resource routes plus custom routes for payment handling |
 | Service Routes | ✅ Complete | All resource routes implemented and working |
-| Expense Routes | ✅ Complete | All resource routes defined |
+| Expense Routes | ✅ Complete | All resource routes implemented and working |
 | Recurring Billing Routes | ✅ Complete | All resource routes defined |
 | Report Routes | ✅ Complete | All report routes defined |
 | Business Routes | ⚠️ Pending | Not defined yet |
@@ -130,10 +133,10 @@ This document tracks the current implementation status of the Billy financial ma
 | Policy | Status | Description |
 |--------|--------|-------------|
 | CustomerPolicy | ✅ Complete | Authorization rules for customer CRUD operations |
-| InvoicePolicy | ⚠️ Pending | Referenced in controller but not implemented |
+| InvoicePolicy | ✅ Complete | Authorization rules for invoice CRUD operations including payments |
 | ServicePolicy | ✅ Complete | Full implementation with proper authorization |
+| ExpensePolicy | ✅ Complete | Authorization rules for expense CRUD operations |
 | BusinessPolicy | ⚠️ Pending | Not implemented yet |
-| ExpensePolicy | ⚠️ Pending | Not implemented yet |
 | RecurringBillingPolicy | ⚠️ Pending | Not implemented yet |
 | DocumentPolicy | ⚠️ Pending | Not implemented yet |
 | Other Policies | ⚠️ Pending | Planned but not implemented |
@@ -154,14 +157,14 @@ This document tracks the current implementation status of the Billy financial ma
 3. **View Implementation**:
    - ✅ Customer views updated to use proper schema field names (full_name, company_name, etc.)
    - ✅ Invoice view implementation completed including detail view with payment handling
+   - ✅ Expense management interface completely implemented with all features
    - ✅ Routes added for invoice-specific actions like recording payments
-   - ✅ Enhanced customer detail view with additional fields and better formatting
 
 4. **Module Implementation Status**:
    - Customer Management Module: ~100% complete (updated to new schema)
    - Invoice Management Module: ~100% complete (all views implemented)
    - Service Management Module: ~95% complete (missing tests)
-   - Expense Management Module: ~40% complete (model implemented, views pending)
+   - Expense Management Module: ~100% complete (fully implemented)
    - Recurring Billing Module: ~40% complete (model implemented, views pending)
    - Reporting Module: ~45% complete (controller methods and routes defined)
    - Business Management Module: ~20% complete (model implemented, views pending)
@@ -171,12 +174,10 @@ This document tracks the current implementation status of the Billy financial ma
 
 ## 10. Next Steps (Prioritized)
 
-1. Create InvoicePolicy for proper authorization
-2. Implement view templates for Expense Management Module
-3. Implement view templates for Recurring Billing Module
-4. Begin implementation of Business Management views
-5. Add tax rate management interface
-6. Implement document upload and management system
-7. Develop settings and configuration module
-8. Add reporting views and functionality
-9. Add comprehensive test coverage for all modules
+1. Implement view templates for Recurring Billing Module
+2. Begin implementation of Business Management views
+3. Add tax rate management interface
+4. Implement document upload and management system
+5. Develop settings and configuration module
+6. Add reporting views and functionality
+7. Add comprehensive test coverage for all modules
