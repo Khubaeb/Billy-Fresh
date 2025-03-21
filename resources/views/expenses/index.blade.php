@@ -22,7 +22,7 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-6 mb-3">
                 <div class="card bg-primary text-white h-100">
                     <div class="card-body">
                         <h6 class="text-white-50">Total Expenses</h6>
@@ -31,19 +31,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-6 mb-3">
                 <div class="card bg-success text-white h-100">
                     <div class="card-body">
                         <h6 class="text-white-50">Billable Expenses</h6>
                         <h3 class="mb-0">{{ number_format($totals['billable'], 2) }}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <div class="card bg-warning text-dark h-100">
-                    <div class="card-body">
-                        <h6 class="text-dark-50">Reimbursable Expenses</h6>
-                        <h3 class="mb-0">{{ number_format($totals['reimbursable'], 2) }}</h3>
                     </div>
                 </div>
             </div>
@@ -141,9 +133,6 @@
                                     </a>
                                     @if($expense->is_billable)
                                         <span class="badge bg-success ms-1">Billable</span>
-                                    @endif
-                                    @if($expense->is_reimbursable)
-                                        <span class="badge bg-warning text-dark ms-1">Reimbursable</span>
                                     @endif
                                 </td>
                                 <td>{{ $expense->category->name ?? 'N/A' }}</td>

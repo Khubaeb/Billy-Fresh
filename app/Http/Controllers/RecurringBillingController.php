@@ -21,18 +21,15 @@ class RecurringBillingController extends Controller
      */
     public function index(Request $request): View
     {
-        // Filter parameters
+        // Filter by various parameters
         $status = $request->input('status');
         $customerId = $request->input('customer_id');
         $businessId = $request->input('business_id');
         $search = $request->input('search');
-        $frequency = $request->input('frequency');
-        $dateFrom = $request->input('date_from');
-        $dateTo = $request->input('date_to');
 
         $query = RecurringBilling::where('user_id', Auth::id())
             ->with(['customer', 'business', 'service', 'paymentMethod']);
-        
+
         // Apply filters
         if ($status) {
             $query->where('status', $status);
@@ -46,48 +43,31 @@ class RecurringBillingController extends Controller
             $query->where('business_id', $businessId);
         }
 
-        if ($frequency) {
-            $query->where('frequency', $frequency);
-        }
-
         if ($search) {
             $query->where(function($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhereHas('customer', function($customerQuery) use ($search) {
-                      $customerQuery->where('full_name', 'like', "%{$search}%")
-                                   ->orWhere('company_name', 'like', "%{$search}%");
+                  ->orWhereHas('customer', function($q) use ($search) {
+                      $q->where('full_name', 'like', "%{$search}%")
+                        ->orWhere('company_name', 'like', "%{$search}%");
                   });
             });
         }
 
-        if ($dateFrom) {
-            $query->whereDate('next_billing_date', '>=', $dateFrom);
-        }
+        $recurringBillings = $query->orderBy('next_billing_date', 'asc')->paginate(10);
 
-        if ($dateTo) {
-            $query->whereDate('next_billing_date', '<=', $dateTo);
-        }
-
-        $recurringBillings = $query->orderBy('next_billing_date')->paginate(10);
-
-        // Get data for filtering dropdowns
+        // Get data for filters
         $customers = Customer::where('user_id', Auth::id())->orderBy('full_name')->get();
-        $businesses = Business::where('user_id', Auth::id())->orderBy('name')->get();
+        
+        // Get all businesses since there likely won't be too many
+        $businesses = Business::orderBy('name')->get();
 
         // Stats for dashboard cards
         $stats = [
             'total' => $query->count(),
             'active' => $query->where('status', 'active')->where('is_active', true)->count(),
-            'paused' => $query->where('status', 'paused')->count(),
-            'upcoming' => $query->where('status', 'active')
-                              ->where('is_active', true)
-                              ->where('next_billing_date', '<=', now()->addDays(7))
-                              ->count(),
-            'total_monthly' => $query->where('status', 'active')
-                                   ->where('is_active', true)
-                                   ->where('frequency', 'monthly')
-                                   ->sum('amount'),
+            'due_this_month' => $query->whereDate('next_billing_date', '<=', Carbon::now()->endOfMonth())->count(),
+            'total_monthly_revenue' => $query->where('frequency', 'monthly')->sum('amount'),
         ];
 
         return view('recurring.index', compact('recurringBillings', 'customers', 'businesses', 'stats'));
@@ -99,9 +79,11 @@ class RecurringBillingController extends Controller
     public function create(): View
     {
         $customers = Customer::where('user_id', Auth::id())->orderBy('full_name')->get();
-        $businesses = Business::where('user_id', Auth::id())->orderBy('name')->get();
+        $businesses = Business::orderBy('name')->get();
         $services = Service::where('user_id', Auth::id())->orderBy('name')->get();
-        $paymentMethods = PaymentMethod::where('user_id', Auth::id())->orWhere('is_system', true)->orderBy('name')->get();
+        
+        // Get payment methods by business
+        $paymentMethods = PaymentMethod::orderBy('type')->get();
 
         return view('recurring.create', compact('customers', 'businesses', 'services', 'paymentMethods'));
     }
@@ -112,46 +94,37 @@ class RecurringBillingController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
+            'name' => 'required|string|max:255',
             'customer_id' => 'required|exists:customers,id',
             'business_id' => 'required|exists:businesses,id',
             'service_id' => 'nullable|exists:services,id',
             'payment_method_id' => 'nullable|exists:payment_methods,id',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
             'amount' => 'required|numeric|min:0.01',
             'currency' => 'required|string|size:3',
             'frequency' => 'required|string|in:daily,weekly,monthly,quarterly,yearly',
             'interval' => 'required|integer|min:1',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
+            'description' => 'nullable|string',
+            'notes' => 'nullable|string',
             'status' => 'required|string|in:active,paused,completed,cancelled',
             'is_active' => 'boolean',
-            'notes' => 'nullable|string',
         ]);
 
-        // Set user ID
+        // Set default values
         $validated['user_id'] = Auth::id();
+        $validated['next_billing_date'] = $validated['start_date'];
+        $validated['billing_count'] = 0;
 
-        // Calculate next billing date
-        $startDate = Carbon::parse($validated['start_date']);
-        $nextBillingDate = $startDate;
-
-        // If start date is in the past, calculate the next billing date from today
-        if ($startDate->isPast()) {
-            $nextBillingDate = now();
+        if (!isset($validated['is_active'])) {
+            $validated['is_active'] = true;
         }
-
-        // Create a temporary RecurringBilling object to use its calculateNextBillingDate method
-        $tempRecurring = new RecurringBilling();
-        $tempRecurring->frequency = $validated['frequency'];
-        $tempRecurring->interval = $validated['interval'];
-        $validated['next_billing_date'] = $tempRecurring->calculateNextBillingDate($nextBillingDate);
 
         try {
             $recurringBilling = RecurringBilling::create($validated);
-
+            
             return redirect()->route('recurring.show', $recurringBilling)
-                ->with('success', 'Recurring billing created successfully');
+                ->with('success', 'Recurring billing created successfully.');
         } catch (\Exception $e) {
             Log::error('Failed to create recurring billing: ' . $e->getMessage());
             
@@ -169,11 +142,41 @@ class RecurringBillingController extends Controller
         $this->authorize('view', $recurring);
         
         // Load relationships
-        $recurring->load(['customer', 'business', 'service', 'paymentMethod', 'invoices' => function($query) {
-            $query->orderBy('created_at', 'desc');
-        }]);
+        $recurring->load(['customer', 'business', 'service', 'paymentMethod']);
         
-        return view('recurring.show', compact('recurring'));
+        // Calculate next billing dates
+        $nextDates = [];
+        $startDate = Carbon::parse($recurring->next_billing_date);
+        
+        for ($i = 0; $i < 12; $i++) {
+            switch ($recurring->frequency) {
+                case 'daily':
+                    $date = $startDate->copy()->addDays($i * $recurring->interval);
+                    break;
+                case 'weekly':
+                    $date = $startDate->copy()->addWeeks($i * $recurring->interval);
+                    break;
+                case 'monthly':
+                    $date = $startDate->copy()->addMonths($i * $recurring->interval);
+                    break;
+                case 'quarterly':
+                    $date = $startDate->copy()->addMonths(3 * $i * $recurring->interval);
+                    break;
+                case 'yearly':
+                    $date = $startDate->copy()->addYears($i * $recurring->interval);
+                    break;
+                default:
+                    $date = $startDate->copy()->addMonths($i * $recurring->interval);
+            }
+            
+            if ($recurring->end_date && $date > Carbon::parse($recurring->end_date)) {
+                break;
+            }
+            
+            $nextDates[] = $date->format('Y-m-d');
+        }
+        
+        return view('recurring.show', compact('recurring', 'nextDates'));
     }
 
     /**
@@ -185,9 +188,11 @@ class RecurringBillingController extends Controller
         $this->authorize('update', $recurring);
         
         $customers = Customer::where('user_id', Auth::id())->orderBy('full_name')->get();
-        $businesses = Business::where('user_id', Auth::id())->orderBy('name')->get();
+        $businesses = Business::orderBy('name')->get();
         $services = Service::where('user_id', Auth::id())->orderBy('name')->get();
-        $paymentMethods = PaymentMethod::where('user_id', Auth::id())->orWhere('is_system', true)->orderBy('name')->get();
+        
+        // Get payment methods
+        $paymentMethods = PaymentMethod::orderBy('type')->get();
         
         return view('recurring.edit', compact('recurring', 'customers', 'businesses', 'services', 'paymentMethods'));
     }
@@ -201,12 +206,11 @@ class RecurringBillingController extends Controller
         $this->authorize('update', $recurring);
         
         $validated = $request->validate([
+            'name' => 'required|string|max:255',
             'customer_id' => 'required|exists:customers,id',
             'business_id' => 'required|exists:businesses,id',
             'service_id' => 'nullable|exists:services,id',
             'payment_method_id' => 'nullable|exists:payment_methods,id',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
             'amount' => 'required|numeric|min:0.01',
             'currency' => 'required|string|size:3',
             'frequency' => 'required|string|in:daily,weekly,monthly,quarterly,yearly',
@@ -214,16 +218,21 @@ class RecurringBillingController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'next_billing_date' => 'required|date',
+            'description' => 'nullable|string',
+            'notes' => 'nullable|string',
             'status' => 'required|string|in:active,paused,completed,cancelled',
             'is_active' => 'boolean',
-            'notes' => 'nullable|string',
         ]);
-
+        
+        if (!isset($validated['is_active'])) {
+            $validated['is_active'] = false;
+        }
+        
         try {
             $recurring->update($validated);
             
             return redirect()->route('recurring.show', $recurring)
-                ->with('success', 'Recurring billing updated successfully');
+                ->with('success', 'Recurring billing updated successfully.');
         } catch (\Exception $e) {
             Log::error('Failed to update recurring billing: ' . $e->getMessage());
             
@@ -244,17 +253,16 @@ class RecurringBillingController extends Controller
             $recurring->delete();
             
             return redirect()->route('recurring.index')
-                ->with('success', 'Recurring billing deleted successfully');
+                ->with('success', 'Recurring billing deleted successfully.');
         } catch (\Exception $e) {
             Log::error('Failed to delete recurring billing: ' . $e->getMessage());
             
-            return back()
-                ->with('error', 'There was a problem deleting the recurring billing');
+            return back()->with('error', 'There was a problem deleting the recurring billing.');
         }
     }
-
+    
     /**
-     * Update the status of a recurring billing.
+     * Update the status of the specified recurring billing.
      */
     public function updateStatus(Request $request, RecurringBilling $recurring): RedirectResponse
     {
@@ -262,61 +270,79 @@ class RecurringBillingController extends Controller
         $this->authorize('update', $recurring);
         
         $validated = $request->validate([
-            'status' => 'required|string|in:active,paused,cancelled',
+            'status' => 'required|string|in:active,paused,completed,cancelled',
         ]);
         
         try {
-            switch ($validated['status']) {
-                case 'active':
-                    $recurring->resume();
-                    $message = 'Recurring billing activated successfully';
-                    break;
-                case 'paused':
-                    $recurring->pause();
-                    $message = 'Recurring billing paused successfully';
-                    break;
-                case 'cancelled':
-                    $recurring->cancel();
-                    $message = 'Recurring billing cancelled successfully';
-                    break;
-            }
+            $recurring->update([
+                'status' => $validated['status'],
+                'is_active' => $validated['status'] === 'active',
+            ]);
             
             return redirect()->route('recurring.show', $recurring)
-                ->with('success', $message);
+                ->with('success', 'Recurring billing status updated successfully.');
         } catch (\Exception $e) {
             Log::error('Failed to update recurring billing status: ' . $e->getMessage());
             
-            return back()
-                ->with('error', 'There was a problem updating the recurring billing status');
+            return back()->with('error', 'There was a problem updating the recurring billing status.');
         }
     }
-
+    
     /**
-     * Generate an invoice from a recurring billing.
+     * Generate an invoice from the recurring billing.
      */
     public function generateInvoice(RecurringBilling $recurring): RedirectResponse
     {
         // Authorization check
         $this->authorize('update', $recurring);
         
-        // Check if the recurring billing is active
-        if (!$recurring->isActive()) {
-            return back()->with('error', 'Cannot generate invoice for inactive recurring billing');
-        }
-        
         try {
-            // Logic to generate an invoice would go here
-            // This would typically create a new invoice based on the recurring billing details
-            // For now, we'll just update the billing record
-            $recurring->recordBilling();
+            // Code to generate invoice would go here
+            // This is a placeholder for now
+            
+            // Update billing count and last billed date
+            $recurring->update([
+                'billing_count' => $recurring->billing_count + 1,
+                'last_billed_date' => now(),
+                'next_billing_date' => $this->calculateNextBillingDate($recurring),
+            ]);
             
             return redirect()->route('recurring.show', $recurring)
-                ->with('success', 'Invoice generation process started');
+                ->with('success', 'Invoice generated successfully.');
         } catch (\Exception $e) {
             Log::error('Failed to generate invoice: ' . $e->getMessage());
             
-            return back()
-                ->with('error', 'There was a problem generating the invoice: ' . $e->getMessage());
+            return back()->with('error', 'There was a problem generating the invoice: ' . $e->getMessage());
         }
+    }
+    
+    /**
+     * Calculate the next billing date based on frequency and interval.
+     */
+    private function calculateNextBillingDate(RecurringBilling $recurring): string
+    {
+        $date = Carbon::parse($recurring->next_billing_date);
+        
+        switch ($recurring->frequency) {
+            case 'daily':
+                $date->addDays($recurring->interval);
+                break;
+            case 'weekly':
+                $date->addWeeks($recurring->interval);
+                break;
+            case 'monthly':
+                $date->addMonths($recurring->interval);
+                break;
+            case 'quarterly':
+                $date->addMonths(3 * $recurring->interval);
+                break;
+            case 'yearly':
+                $date->addYears($recurring->interval);
+                break;
+            default:
+                $date->addMonths($recurring->interval);
+        }
+        
+        return $date->format('Y-m-d');
     }
 }

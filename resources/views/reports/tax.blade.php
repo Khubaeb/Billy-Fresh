@@ -33,9 +33,9 @@
                             <i class="bi bi-download"></i> Export
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-pdf me-2"></i>PDF</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-excel me-2"></i>Excel</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-printer me-2"></i>Print</a></li>
+                            <li><a class="dropdown-item" href="{{ route('exports.tax.pdf', request()->query()) }}"><i class="bi bi-file-earmark-pdf me-2"></i>PDF</a></li>
+                            <li><a class="dropdown-item" href="{{ route('exports.tax.excel', request()->query()) }}"><i class="bi bi-file-earmark-excel me-2"></i>Excel</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="window.print(); return false;"><i class="bi bi-printer me-2"></i>Print</a></li>
                         </ul>
                     </div>
                 </div>
@@ -287,14 +287,6 @@
                     }
                 }
             }
-        });
-
-        // Set up export actions (in a real implementation these would trigger actual exports)
-        document.querySelectorAll('.dropdown-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('In a live implementation, this would export the report as ' + this.textContent.trim());
-            });
         });
     });
 </script>

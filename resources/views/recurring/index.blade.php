@@ -41,8 +41,8 @@
             <div class="col-md-3 mb-3">
                 <div class="card bg-warning text-dark h-100">
                     <div class="card-body">
-                        <h6 class="text-dark-50">Upcoming (7 Days)</h6>
-                        <h3 class="mb-0">{{ $stats['upcoming'] }}</h3>
+                        <h6 class="text-dark-50">Due This Month</h6>
+                        <h3 class="mb-0">{{ $stats['due_this_month'] }}</h3>
                     </div>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                 <div class="card bg-info text-white h-100">
                     <div class="card-body">
                         <h6 class="text-white-50">Monthly Revenue</h6>
-                        <h3 class="mb-0">{{ number_format($stats['total_monthly'], 2) }}</h3>
+                        <h3 class="mb-0">{{ number_format($stats['total_monthly_revenue'], 2) }}</h3>
                     </div>
                 </div>
             </div>

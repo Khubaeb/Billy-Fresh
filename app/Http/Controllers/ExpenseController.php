@@ -67,23 +67,20 @@ class ExpenseController extends Controller
 
         $expenses = $query->orderBy('expense_date', 'desc')->paginate(10);
 
-        // Get expense categories for filtering
+        // Get expense categories for filtering - removed is_system check as it doesn't exist in schema
         $categories = ExpenseCategory::where('user_id', Auth::id())
-            ->orWhere('is_system', true)
             ->orderBy('name')
             ->get();
 
         // Get businesses for filtering
-        $businesses = Business::where('user_id', Auth::id())->orderBy('name')->get();
+        $businesses = Business::orderBy('name')->get();
 
-        // Calculate totals for display
+        // Calculate totals for display - removed is_reimbursable references
         $totals = [
             'count' => $expenses->total(),
             'amount' => $query->sum('amount'),
             'billable' => $query->where('is_billable', true)->sum('amount'),
-            'non_billable' => $query->where('is_billable', false)->sum('amount'),
-            'reimbursable' => $query->where('is_reimbursable', true)->sum('amount'),
-            'non_reimbursable' => $query->where('is_reimbursable', false)->sum('amount'),
+            'non_billable' => $query->where('is_billable', false)->sum('amount')
         ];
 
         return view('expenses.index', compact('expenses', 'categories', 'businesses', 'totals'));
@@ -94,12 +91,12 @@ class ExpenseController extends Controller
      */
     public function create(): View
     {
+        // Get expense categories - removed is_system check as it doesn't exist in schema
         $categories = ExpenseCategory::where('user_id', Auth::id())
-            ->orWhere('is_system', true)
             ->orderBy('name')
             ->get();
 
-        $businesses = Business::where('user_id', Auth::id())->orderBy('name')->get();
+        $businesses = Business::orderBy('name')->get();
         $customers = Customer::where('user_id', Auth::id())->orderBy('full_name')->get();
         $invoices = Invoice::where('user_id', Auth::id())
             ->whereIn('status', ['draft', 'sent', 'overdue', 'partially_paid'])
@@ -125,7 +122,6 @@ class ExpenseController extends Controller
             'reference' => 'nullable|string|max:100',
             'vendor_name' => 'nullable|string|max:255',
             'is_billable' => 'boolean',
-            'is_reimbursable' => 'boolean',
             'receipt_image' => 'nullable|image|max:5120', // 5MB max
             'notes' => 'nullable|string',
             'status' => 'nullable|string|max:50',
@@ -139,10 +135,6 @@ class ExpenseController extends Controller
         // Set default values if not provided
         if (!isset($validated['is_billable'])) {
             $validated['is_billable'] = false;
-        }
-
-        if (!isset($validated['is_reimbursable'])) {
-            $validated['is_reimbursable'] = false;
         }
 
         if (!isset($validated['status'])) {
@@ -191,12 +183,12 @@ class ExpenseController extends Controller
         // Authorization check
         $this->authorize('update', $expense);
 
+        // Get expense categories - removed is_system check as it doesn't exist in schema
         $categories = ExpenseCategory::where('user_id', Auth::id())
-            ->orWhere('is_system', true)
             ->orderBy('name')
             ->get();
 
-        $businesses = Business::where('user_id', Auth::id())->orderBy('name')->get();
+        $businesses = Business::orderBy('name')->get();
         $customers = Customer::where('user_id', Auth::id())->orderBy('full_name')->get();
         $invoices = Invoice::where('user_id', Auth::id())
             ->whereIn('status', ['draft', 'sent', 'overdue', 'partially_paid'])
@@ -225,7 +217,6 @@ class ExpenseController extends Controller
             'reference' => 'nullable|string|max:100',
             'vendor_name' => 'nullable|string|max:255',
             'is_billable' => 'boolean',
-            'is_reimbursable' => 'boolean',
             'receipt_image' => 'nullable|image|max:5120', // 5MB max
             'notes' => 'nullable|string',
             'status' => 'nullable|string|max:50',

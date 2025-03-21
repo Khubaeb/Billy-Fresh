@@ -37,9 +37,6 @@
                             @if($expense->is_billable)
                                 <span class="badge bg-success me-2">Billable</span>
                             @endif
-                            @if($expense->is_reimbursable)
-                                <span class="badge bg-warning text-dark me-2">Reimbursable</span>
-                            @endif
                             <span class="badge bg-{{ $expense->status == 'completed' ? 'success' : ($expense->status == 'pending' ? 'warning' : 'secondary') }}">
                                 {{ ucfirst($expense->status) }}
                             </span>
@@ -121,7 +118,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-md-4">
         <!-- Receipt Card -->
         @if($expense->receipt_path)
@@ -168,28 +165,17 @@
                             </li>
                         @endif
                     @endif
-                    
-                    @if($expense->is_reimbursable)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>Reimbursement Status</span>
-                            <span class="badge bg-warning text-dark">Reimbursable</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>Reimbursed</span>
-                            <span>{{ $expense->status == 'completed' ? 'Yes' : 'No' }}</span>
-                        </li>
-                    @endif
-                    
+
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <span>Created By</span>
                         <span>{{ $expense->user->name ?? 'Unknown' }}</span>
                     </li>
-                    
+
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <span>Created At</span>
                         <span>{{ $expense->created_at->format('M d, Y g:i A') }}</span>
                     </li>
-                    
+
                     @if($expense->updated_at && $expense->updated_at->ne($expense->created_at))
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span>Last Updated</span>
