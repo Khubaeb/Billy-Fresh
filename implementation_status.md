@@ -291,6 +291,7 @@ New tables added to support the Accounting Portal:
 A dedicated controller and route file have been created for the Accounting Portal:
 - AccountingPortalController (manages all accounting-related functionality)
 - routes/accounting.php (defines all accounting portal routes)
+- Role-based middleware protection (only accessible to Administrator and Accountant roles)
 
 ### UI Implementation
 

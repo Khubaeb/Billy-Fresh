@@ -63,6 +63,17 @@
                             <i class="bi bi-bar-chart me-1"></i> Reports
                         </a>
                     </li>
+                    
+                    <!-- Accounting Portal - Visible to Admin and Accountant roles -->
+                    @if(Auth::user()->roles->contains(function($role) { 
+                        return $role->name === 'Administrator' || $role->name === 'Accountant'; 
+                    }))
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('accounting.*') ? 'active' : '' }}" href="{{ route('accounting.index') }}">
+                            <i class="bi bi-calculator me-1"></i> Accounting Portal
+                        </a>
+                    </li>
+                    @endif
                 @endauth
             </ul>
 
