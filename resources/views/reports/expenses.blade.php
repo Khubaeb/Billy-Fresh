@@ -35,7 +35,6 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                             <li><a class="dropdown-item" href="{{ route('exports.expenses.pdf', request()->query()) }}"><i class="bi bi-file-earmark-pdf me-2"></i>PDF</a></li>
-                            <li><a class="dropdown-item" href="{{ route('exports.expenses.excel', request()->query()) }}"><i class="bi bi-file-earmark-excel me-2"></i>Excel</a></li>
                             <li><a class="dropdown-item" href="#" onclick="window.print(); return false;"><i class="bi bi-printer me-2"></i>Print</a></li>
                         </ul>
                     </div>

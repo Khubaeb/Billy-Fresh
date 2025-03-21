@@ -10,11 +10,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDF;
-use Maatwebsite\Laravel\Excel\Facades\Excel;
-use App\Exports\CustomersExport;
-use App\Exports\ExpensesExport;
-use App\Exports\IncomeExport;
-use App\Exports\TaxExport;
 
 class ReportExportController extends Controller
 {
@@ -236,19 +231,6 @@ class ReportExportController extends Controller
     }
 
     /**
-     * Export income report as Excel
-     */
-    public function incomeAsExcel(Request $request)
-    {
-        [$startDate, $endDate] = $this->getDateRange($request);
-        
-        return Excel::download(
-            new IncomeExport($startDate, $endDate), 
-            'income-report-' . now()->format('Y-m-d') . '.xlsx'
-        );
-    }
-
-    /**
      * Export expenses report as PDF
      */
     public function expensesAsPdf(Request $request)
@@ -258,19 +240,6 @@ class ReportExportController extends Controller
         $pdf = PDF::loadView('exports.expenses_pdf', $data);
         
         return $pdf->download('expenses-report-' . now()->format('Y-m-d') . '.pdf');
-    }
-
-    /**
-     * Export expenses report as Excel
-     */
-    public function expensesAsExcel(Request $request)
-    {
-        [$startDate, $endDate] = $this->getDateRange($request);
-        
-        return Excel::download(
-            new ExpensesExport($startDate, $endDate), 
-            'expenses-report-' . now()->format('Y-m-d') . '.xlsx'
-        );
     }
 
     /**
@@ -286,19 +255,6 @@ class ReportExportController extends Controller
     }
 
     /**
-     * Export tax report as Excel
-     */
-    public function taxAsExcel(Request $request)
-    {
-        [$startDate, $endDate] = $this->getDateRange($request);
-        
-        return Excel::download(
-            new TaxExport($startDate, $endDate), 
-            'tax-report-' . now()->format('Y-m-d') . '.xlsx'
-        );
-    }
-
-    /**
      * Export customers report as PDF
      */
     public function customersAsPdf(Request $request)
@@ -308,18 +264,5 @@ class ReportExportController extends Controller
         $pdf = PDF::loadView('exports.customers_pdf', $data);
         
         return $pdf->download('customers-report-' . now()->format('Y-m-d') . '.pdf');
-    }
-
-    /**
-     * Export customers report as Excel
-     */
-    public function customersAsExcel(Request $request)
-    {
-        [$startDate, $endDate] = $this->getDateRange($request);
-        
-        return Excel::download(
-            new CustomersExport($startDate, $endDate), 
-            'customers-report-' . now()->format('Y-m-d') . '.xlsx'
-        );
     }
 }

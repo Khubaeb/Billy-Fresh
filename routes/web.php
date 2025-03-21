@@ -86,23 +86,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/customers', [ReportController::class, 'customers'])->name('reports.customers');
     Route::get('/reports/tax', [ReportController::class, 'tax'])->name('reports.tax');
 
-    // Report Exports
+    // Report Exports (PDF only)
     Route::prefix('exports')->name('exports.')->group(function () {
         // Income exports
         Route::get('/income/pdf', [ReportExportController::class, 'incomeAsPdf'])->name('income.pdf');
-        Route::get('/income/excel', [ReportExportController::class, 'incomeAsExcel'])->name('income.excel');
         
         // Expense exports
         Route::get('/expenses/pdf', [ReportExportController::class, 'expensesAsPdf'])->name('expenses.pdf');
-        Route::get('/expenses/excel', [ReportExportController::class, 'expensesAsExcel'])->name('expenses.excel');
         
         // Tax exports
         Route::get('/tax/pdf', [ReportExportController::class, 'taxAsPdf'])->name('tax.pdf');
-        Route::get('/tax/excel', [ReportExportController::class, 'taxAsExcel'])->name('tax.excel');
         
         // Customer exports
         Route::get('/customers/pdf', [ReportExportController::class, 'customersAsPdf'])->name('customers.pdf');
-        Route::get('/customers/excel', [ReportExportController::class, 'customersAsExcel'])->name('customers.excel');
     });
 
     // The following routes are commented out as controllers are not implemented yet
