@@ -51,8 +51,10 @@ Route::middleware('auth')->group(function () {
     // Expense Management
     Route::resource('expenses', ExpenseController::class);
 
-    // Recurring Billing
+    // Recurring Billing Management
     Route::resource('recurring', RecurringBillingController::class);
+    Route::put('/recurring/{recurring}/update-status', [RecurringBillingController::class, 'updateStatus'])->name('recurring.update-status');
+    Route::post('/recurring/{recurring}/generate-invoice', [RecurringBillingController::class, 'generateInvoice'])->name('recurring.generate-invoice');
 
     // Reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
