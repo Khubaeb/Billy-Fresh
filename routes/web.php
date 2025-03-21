@@ -35,6 +35,10 @@ Route::middleware('auth')->group(function () {
     // Business Management
     Route::resource('businesses', BusinessController::class);
     Route::put('/businesses/{business}/settings', [BusinessController::class, 'updateSettings'])->name('businesses.update-settings');
+    
+    // Tax Rate Management
+    Route::resource('tax-rates', TaxRateController::class);
+    Route::post('/tax-rates/{taxRate}/set-default', [TaxRateController::class, 'setDefault'])->name('tax-rates.set-default');
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
