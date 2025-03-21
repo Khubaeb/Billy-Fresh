@@ -221,10 +221,9 @@ This document tracks the current implementation status of the Billy financial ma
 
 ## 11. Next Steps (Prioritized)
 
-1. Implement Bookkeeping Module (detailed in docs/bookkeeping_module_plan.md)
-2. Complete UI verification for remaining core modules
-3. Add comprehensive test coverage for all modules 
-4. Fix any issues identified during UI verification
+1. Complete UI verification for remaining core modules
+2. Add comprehensive test coverage for all modules 
+3. Fix any issues identified during UI verification
 
 ## 12. Recent Fixes and Enhancements
 
@@ -252,7 +251,7 @@ This document tracks the current implementation status of the Billy financial ma
 
 ## 13. Accounting Portal Implementation
 
-After reviewing the original system, we've implemented an Accounting Portal focused on report generation and data exports for accountants rather than a comprehensive bookkeeping system. This approach matches how the original system operated as an interface for accountants.
+After reviewing the original system, we've implemented an Accounting Portal focused on report generation and data exports for accountants. This approach matches how the original system operated as an interface for accountants rather than implementing a full double-entry bookkeeping system.
 
 ### Components Implemented
 

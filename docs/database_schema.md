@@ -182,6 +182,69 @@ This document outlines the database schema for the Logicstudio clone system. It 
 - `created_at` timestamp
 - `updated_at` timestamp
 
+## Accounting Portal
+
+### accounting_exports
+- `id` bigint PK
+- `business_id` bigint FK
+- `user_id` bigint FK
+- `export_type` varchar
+- `start_date` date
+- `end_date` date
+- `period_type` varchar
+- `format` varchar
+- `status` varchar
+- `file_path` varchar
+- `parameters` json
+- `download_token` varchar
+- `completed_at` timestamp
+- `created_at` timestamp
+- `updated_at` timestamp
+
+### accounting_settings
+- `id` bigint PK
+- `business_id` bigint FK
+- `accounting_office_name` varchar
+- `accounting_contact_number` varchar
+- `accounting_email` varchar
+- `accounting_software` varchar
+- `export_format_preference` varchar
+- `include_attachments` boolean
+- `auto_export_enabled` boolean
+- `auto_export_frequency` varchar
+- `auto_export_settings` json
+- `account_code_mapping` json
+- `created_at` timestamp
+- `updated_at` timestamp
+
+### export_templates
+- `id` bigint PK
+- `business_id` bigint FK
+- `name` varchar
+- `export_type` varchar
+- `settings` json
+- `is_default` boolean
+- `created_at` timestamp
+- `updated_at` timestamp
+
+### accounting_documents
+- `id` bigint PK
+- `business_id` bigint FK
+- `user_id` bigint FK
+- `document_type` varchar
+- `name` varchar
+- `file_path` varchar
+- `document_date` date
+- `reference_number` varchar
+- `source_type` varchar
+- `source_id` bigint
+- `amount` decimal
+- `is_expense` boolean
+- `category` varchar
+- `notes` text
+- `created_at` timestamp
+- `updated_at` timestamp
+
 ## System Features
 
 ### activity_logs
@@ -233,3 +296,4 @@ This document outlines the database schema for the Logicstudio clone system. It 
 8. **Businesses & Documents**: Businesses have various documents
 9. **Polymorphic Relationships**: Documents can belong to various entities through documentable
 10. **Settings**: Polymorphic relationship through settable
+11. **Accounting Portal**: Businesses have accounting settings, exports, templates, and documents
