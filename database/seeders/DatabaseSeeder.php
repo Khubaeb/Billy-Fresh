@@ -12,8 +12,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create a test user for development
+        // Create a test user and roles for development
         $this->call([
+            RoleSeeder::class,
             TestUserSeeder::class,
         ]);
     }
