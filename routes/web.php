@@ -36,34 +36,34 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
     // Customer Management
     Route::resource('customers', CustomerController::class);
-    
+
     // Invoice Management
     Route::resource('invoices', InvoiceController::class);
-    
+
     // Service Management
     Route::resource('services', ServiceController::class);
-    
+
     // Expense Management
     Route::resource('expenses', ExpenseController::class);
-    
+
     // Recurring Billing
     Route::resource('recurring', RecurringBillingController::class);
-    
+
     // Reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/income', [ReportController::class, 'income'])->name('reports.income');
     Route::get('/reports/expenses', [ReportController::class, 'expenses'])->name('reports.expenses');
     Route::get('/reports/customers', [ReportController::class, 'customers'])->name('reports.customers');
     Route::get('/reports/tax', [ReportController::class, 'tax'])->name('reports.tax');
-    
+
     // The following routes are commented out as controllers are not implemented yet
     /*
     // User Management
     Route::resource('users', \App\Http\Controllers\UserController::class);
-    
+
     // System Settings
     Route::get('/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
