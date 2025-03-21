@@ -47,23 +47,24 @@ This document tracks the current implementation status of the Billy financial ma
 | Model | Status | Description |
 |-------|--------|-------------|
 | User | ✅ Complete | Laravel's default with relationships |
-| Role | ⚠️ Pending | Structure defined in migration only |
-| Business | ⚠️ Pending | Migration complete but model needs implementation |
+| Role | ✅ Complete | Model with permissions handling and relationships |
+| UserRole | ✅ Complete | Pivot model for user-role-business relationships |
+| Business | ✅ Complete | Full business model with settings management and relationships |
 | Customer | ✅ Complete | Model with relationships and attribute accessors |
 | Invoice | ✅ Complete | Model with relationships and business logic |
 | InvoiceItem | ✅ Complete | Model with relationships and proper attributes |
-| InvoicePayment | ⚠️ Pending | Structure defined in migration only |
+| InvoicePayment | ✅ Complete | Model with relationships and payment tracking |
 | Service | ✅ Complete | Model with relationships, accessors, and business logic |
 | Expense | ✅ Complete | Basic model created |
 | ExpenseCategory | ⚠️ Pending | Structure defined in migration only |
 | RecurringBilling | ✅ Complete | Basic model created |
-| PaymentMethod | ⚠️ Pending | Structure defined in migration only |
+| PaymentMethod | ✅ Complete | Model with relationships and payment method tracking |
+| TaxRate | ✅ Complete | Model with tax calculation and relationships |
 | Document | ⚠️ Pending | Structure defined in migration only |
 | DocumentTemplate | ⚠️ Pending | Structure defined in migration only |
 | ActivityLog | ⚠️ Pending | Structure defined in migration only |
 | Notification | ⚠️ Pending | Structure defined in migration only |
 | Setting | ⚠️ Pending | Structure defined in migration only |
-| TaxRate | ⚠️ Pending | Structure defined in migration only |
 
 ## 5. Controllers
 
@@ -146,28 +147,35 @@ This document tracks the current implementation status of the Billy financial ma
    - ✅ Enhanced schema with additional fields for better data management
    - ✅ Test user automatically created during migration
 
-2. **Module Implementation Status**:
+2. **Model Implementation**:
+   - ✅ Implemented key models with relationships and business logic
+   - ✅ Added Role and UserRole models for permission handling
+   - ✅ Enhanced Business model with settings management
+   - ✅ Added PaymentMethod, InvoicePayment, and TaxRate models
+   - ⚠️ Still need to implement several remaining models
+
+3. **Module Implementation Status**:
    - Customer Management Module: ~95% complete (missing tests)
-   - Invoice Management Module: ~85% complete (missing invoice detail view)
+   - Invoice Management Module: ~90% complete (missing invoice detail view)
    - Service Management Module: ~95% complete (missing tests)
    - Expense Management Module: ~35% complete (routes and structure only)
    - Recurring Billing Module: ~35% complete (routes and structure only)
    - Reporting Module: ~45% complete (controller methods and routes defined)
-   - Business Management Module: ~15% complete (database structure only)
+   - Business Management Module: ~20% complete (model implemented, views pending)
    - Document Management Module: ~10% complete (database structure only)
    - Settings & Configuration Module: ~10% complete (database structure only)
-   - Tax Rate Management Module: ~10% complete (database structure only)
+   - Tax Rate Management Module: ~40% complete (model implemented, views pending)
 
 ## 10. Next Steps (Prioritized)
 
-1. Implement missing models for database tables (Role, PaymentMethod, etc.)
-2. Complete the Invoice detail view implementation
-3. Create InvoicePolicy for proper authorization
+1. Implement the Invoice detail view
+2. Create InvoicePolicy for proper authorization
+3. Implement remaining models (ExpenseCategory, Document, DocumentTemplate, etc.)
 4. Implement view templates for Expense Management Module
 5. Implement view templates for Recurring Billing Module
-6. Begin implementation of Business Management functionality
-7. Add reporting views and functionality
+6. Begin implementation of Business Management views
+7. Add tax rate management interface
 8. Implement document upload and management system
-9. Add tax rate management interface
-10. Develop settings and configuration module
+9. Develop settings and configuration module
+10. Add reporting views and functionality
 11. Add comprehensive test coverage for all modules

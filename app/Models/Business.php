@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Business extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -22,7 +23,19 @@ class Business extends Model
         'phone',
         'email',
         'tax_number',
+        'registration_number',
+        'website',
         'settings',
+        'address_line1',
+        'address_line2',
+        'city',
+        'state',
+        'postal_code',
+        'country',
+        'currency',
+        'logo_path',
+        'notes',
+        'is_active'
     ];
 
     /**
@@ -32,6 +45,7 @@ class Business extends Model
      */
     protected $casts = [
         'settings' => 'json',
+        'is_active' => 'boolean'
     ];
 
     /**
@@ -127,6 +141,22 @@ class Business extends Model
     }
 
     /**
+     * Get the activity logs for the business.
+     */
+    public function activityLogs()
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
+
+    /**
+     * Get the notifications for the business.
+     */
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    /**
      * Get the business settings.
      *
      * @param string $key
@@ -150,7 +180,7 @@ class Business extends Model
         $settings = $this->settings ?? [];
         data_set($settings, $key, $value);
         $this->settings = $settings;
-        
+
         return $this;
     }
 }
