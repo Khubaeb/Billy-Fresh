@@ -72,7 +72,7 @@ This document tracks the current implementation status of the Billy financial ma
 |------------|--------|-------------|
 | Auth Controllers | ✅ Complete | Login, registration, password reset |
 | CustomerController | ✅ Complete | Updated for new schema field names (full_name, company_name, etc.) |
-| InvoiceController | ✅ Complete | Updated for new schema field names (total_amount, etc.) |
+| InvoiceController | ✅ Complete | Updated for new schema field names and added payment handling |
 | ServiceController | ✅ Complete | Full implementation with usage statistics |
 | ExpenseController | ✅ Created | Basic structure, needs implementation with new models |
 | RecurringBillingController | ✅ Created | Basic structure, needs implementation with new models |
@@ -94,7 +94,7 @@ This document tracks the current implementation status of the Billy financial ma
 | Customer Detail | ✅ Complete | Enhanced with additional fields and proper schema field names |
 | Invoice List | ✅ Complete | Table view with searching, filtering, and actions |
 | Invoice Create | ✅ Complete | Interactive form with dynamic line items |
-| Invoice Detail | ⚠️ Planned | Invoice viewing with payment options |
+| Invoice Detail | ✅ Complete | Comprehensive invoice view with payment options and history |
 | Service List | ✅ Complete | Table view with searching, filtering, and actions |
 | Service Create | ✅ Complete | Form with validation and profit calculations |
 | Service Detail | ✅ Complete | Detail view with usage statistics |
@@ -114,7 +114,7 @@ This document tracks the current implementation status of the Billy financial ma
 |-------------|--------|-------------|
 | Auth Routes | ✅ Complete | Login, logout, registration, password reset |
 | Customer Routes | ✅ Complete | All resource routes implemented and working |
-| Invoice Routes | ✅ Complete | All resource routes implemented and working |
+| Invoice Routes | ✅ Complete | All resource routes plus custom routes for payment handling |
 | Service Routes | ✅ Complete | All resource routes implemented and working |
 | Expense Routes | ✅ Complete | All resource routes defined |
 | Recurring Billing Routes | ✅ Complete | All resource routes defined |
@@ -153,12 +153,13 @@ This document tracks the current implementation status of the Billy financial ma
 
 3. **View Implementation**:
    - ✅ Customer views updated to use proper schema field names (full_name, company_name, etc.)
-   - ✅ Invoice-related code updated to use proper schema field names (total_amount, etc.)
+   - ✅ Invoice view implementation completed including detail view with payment handling
+   - ✅ Routes added for invoice-specific actions like recording payments
    - ✅ Enhanced customer detail view with additional fields and better formatting
 
 4. **Module Implementation Status**:
    - Customer Management Module: ~100% complete (updated to new schema)
-   - Invoice Management Module: ~90% complete (missing invoice detail view)
+   - Invoice Management Module: ~100% complete (all views implemented)
    - Service Management Module: ~95% complete (missing tests)
    - Expense Management Module: ~40% complete (model implemented, views pending)
    - Recurring Billing Module: ~40% complete (model implemented, views pending)
@@ -170,13 +171,12 @@ This document tracks the current implementation status of the Billy financial ma
 
 ## 10. Next Steps (Prioritized)
 
-1. Implement the Invoice detail view
-2. Create InvoicePolicy for proper authorization
-3. Implement view templates for Expense Management Module
-4. Implement view templates for Recurring Billing Module
-5. Begin implementation of Business Management views
-6. Add tax rate management interface
-7. Implement document upload and management system
-8. Develop settings and configuration module
-9. Add reporting views and functionality
-10. Add comprehensive test coverage for all modules
+1. Create InvoicePolicy for proper authorization
+2. Implement view templates for Expense Management Module
+3. Implement view templates for Recurring Billing Module
+4. Begin implementation of Business Management views
+5. Add tax rate management interface
+6. Implement document upload and management system
+7. Develop settings and configuration module
+8. Add reporting views and functionality
+9. Add comprehensive test coverage for all modules

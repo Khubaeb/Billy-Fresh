@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
 
     // Invoice Management
     Route::resource('invoices', InvoiceController::class);
+    Route::put('/invoices/{invoice}/mark-as-sent', [InvoiceController::class, 'markAsSent'])->name('invoices.mark-as-sent');
+    Route::post('/invoices/{invoice}/record-payment', [InvoiceController::class, 'recordPayment'])->name('invoices.record-payment');
 
     // Service Management
     Route::resource('services', ServiceController::class);
