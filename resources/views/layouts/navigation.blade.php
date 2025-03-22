@@ -95,7 +95,7 @@
 
                             <!-- Settings -->
                             <li>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('user.settings.index') }}">
                                     <i class="bi bi-gear me-2"></i> {{ __('Settings') }}
                                 </a>
                             </li>

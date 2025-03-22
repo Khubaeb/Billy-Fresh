@@ -9,6 +9,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\RecurringBillingController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Exports\ReportExportController;
+use App\Http\Controllers\UserSettingsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,6 +55,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/settings/user', [SettingsController::class, 'updateUser'])->name('settings.user.update');
     Route::get('/settings/system', [SettingsController::class, 'system'])->name('settings.system');
     Route::put('/settings/system', [SettingsController::class, 'updateSystem'])->name('settings.system.update');
+    
+    // User Settings
+    Route::get('/user/settings', [UserSettingsController::class, 'index'])->name('user.settings.index');
+    Route::put('/user/settings', [UserSettingsController::class, 'update'])->name('user.settings.update');
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

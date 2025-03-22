@@ -126,7 +126,7 @@
                         </div>
 
                         <!-- Revenue Section -->
-                        <h3 class="h5 text-end my-4">Revenue</h3>
+                        <h3 class="h5 my-4">Revenue</h3>
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
@@ -151,7 +151,7 @@
                         </div>
 
                         <!-- Expense Files Section -->
-                        <h3 class="h5 text-end my-4">Expense files</h3>
+                        <h3 class="h5 my-4">Expense files</h3>
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
