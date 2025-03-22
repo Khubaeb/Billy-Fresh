@@ -34,6 +34,7 @@ This document outlines the coding standards and best practices for the Logicstud
    - Use route names for all routes
    - Use resource routes when appropriate
    - Keep route files organized and readable
+   - Use separate route files for major modules (e.g., accounting.php)
 
 2. **Controllers**
    - Follow single responsibility principle
@@ -57,6 +58,7 @@ This document outlines the coding standards and best practices for the Logicstud
    - Document complex migrations
    - Use seeders for test/demo data
    - Define foreign keys and indexes explicitly
+   - Use soft deletes for important models
 
 6. **Blade Templates**
    - Keep templates clean and minimal
@@ -198,8 +200,10 @@ This document outlines the coding standards and best practices for the Logicstud
 2. **Authentication/Authorization**
    - Follow Laravel's authentication best practices
    - Use middleware for authorization
+   - Implement custom role-based middleware for feature restrictions
    - Implement proper password policies
    - Use CSRF protection for all forms
+   - Restrict routes based on user roles
 
 3. **Data Protection**
    - Encrypt sensitive data
