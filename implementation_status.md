@@ -89,6 +89,8 @@ This document tracks the current implementation status of the Billy financial ma
 | View | Status | Description |
 |------|--------|-------------|
 | Auth Views | ✅ Complete | Login, registration, password reset |
+| Profile | ✅ Complete | Profile management with Bootstrap-styled interface |
+| User Settings | ✅ Complete | Comprehensive user settings with theme, localization, and notification preferences |
 | Dashboard | ✅ Complete | Layout with financial overview and quick actions |
 | Customer List | ✅ Complete | Updated to use proper schema field names (full_name, company_name) |
 | Customer Create/Edit | ✅ Complete | Updated to use proper schema field names and added new fields |
@@ -199,8 +201,10 @@ This document tracks the current implementation status of the Billy financial ma
 | Feature | Status | Notes |
 |---------|--------|-------|
 | Login/Authentication | ✅ Working | Successfully logs in test user |
+| Profile Management | ✅ Working | Profile editing with Bootstrap-styled interface |
+| User Settings | ✅ Working | User preference management using the settings system |
 | Dashboard | ✅ Working | Displays financial overview and quick actions |
-| Navigation Menu | ✅ Working | All module links function correctly |
+| Navigation Menu | ✅ Working | All module links function correctly with proper permissions |
 | Customer Management | ✅ Working | Fixed business-user relationship queries, create form loads correctly |
 | Invoice Management | ⏳ Testing | Need to verify invoice creation and payment handling |
 | Service Management | ⏳ Testing | Need to verify service creation and pricing calculations |
@@ -227,7 +231,13 @@ This document tracks the current implementation status of the Billy financial ma
 
 ## 12. Recent Fixes and Enhancements
 
-1. **Fixed Database Relationship Queries**:
+1. **UI and UX Improvements**:
+   - Redesigned profile page with Bootstrap styling
+   - Created comprehensive user settings interface
+   - Fixed RTL display issues in accounting portal
+   - Enhanced style consistency across all interfaces
+
+2. **Fixed Database Relationship Queries**:
    - Updated CustomerController to use proper user-business relationship through the user_roles pivot table
    - Updated ReportController to use proper relationship queries for all reports (income, expenses, customers, tax)
    - Fixed errors related to 'user_id' column not found in 'businesses' table
@@ -290,7 +300,10 @@ New tables added to support the Accounting Portal:
 A dedicated controller and route file have been created for the Accounting Portal:
 - AccountingPortalController (manages all accounting-related functionality)
 - routes/accounting.php (defines all accounting portal routes)
-- Role-based middleware protection (only accessible to Administrator and Accountant roles)
+   - Role-based middleware protection through custom CheckRole middleware
+   - Restricted access to Administrator and Accountant roles
+   - Added proper route-level authorization
+   - Conditional navigation menu display based on user roles
 
 ### UI Implementation
 
