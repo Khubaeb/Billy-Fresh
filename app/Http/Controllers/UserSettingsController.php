@@ -35,15 +35,24 @@ class UserSettingsController extends Controller
             'date_format' => 'nullable|string',
         ]);
         
-        // Update user settings
-        $settings = $user->settings ?? [];
-        $updatedSettings = array_merge($settings, $validated);
-        
-        // Save settings
-        $user->settings = $updatedSettings;
-        $user->save();
+        // Save each setting individually using the Setting model
+        foreach ($validated as $key => $value) {
+            if (is_array($value)) {
+                $value = json_encode($value);
+            }
+            
+            \App\Models\Setting::setValue('App\\Models\\User', $user->id, $key, $value);
+        }
         
         return redirect()->route('user.settings.index')
             ->with('success', 'Settings updated successfully');
+    }
+    
+    /**
+     * Get user setting value with default fallback
+     */
+    private function getUserSetting($user, $key, $default = null)
+    {
+        return \App\Models\Setting::getValue('App\\Models\\User', $user->id, $key, $default);
     }
 }
